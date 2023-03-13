@@ -8,7 +8,7 @@ NAME	= philo
 
 CLANG	= clang
 
-FLAGS	= -Wall -Wextra -Werror -g -fsanitize=thread
+FLAGS	= -Wall -Wextra -Werror
 
 INCLUDE	= -lpthread
 
