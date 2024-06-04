@@ -32,6 +32,8 @@
 * timestamp_in_ms X is sleeping
 * timestamp_in_ms X is thinking
 * timestamp_in_ms X died
+
+  
 철학자는 각각 한 개의 스레드로 구성이 되어있어야 하며 포크가 복제되지 않도록 포크를 뮤텍스로 보호해야 한다.
 
 
