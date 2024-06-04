@@ -28,11 +28,11 @@
 
 철학자의 상태는 다음과 같은 형식으로 출력된다. 다른 철학자의 상태와 뒤엉키거나 섞인 상태로 출력이 되면 안 된다.
 
-timestamp_in_ms X has taken a fork
-timestamp_in_ms X is eating
-timestamp_in_ms X is sleeping
-timestamp_in_ms X is thinking
-timestamp_in_ms X died
+* timestamp_in_ms X has taken a fork
+* timestamp_in_ms X is eating
+* timestamp_in_ms X is sleeping
+* timestamp_in_ms X is thinking
+* timestamp_in_ms X died
 철학자는 각각 한 개의 스레드로 구성이 되어있어야 하며 포크가 복제되지 않도록 포크를 뮤텍스로 보호해야 한다.
 
 
@@ -48,4 +48,25 @@ timestamp_in_ms X died
 ![image](https://github.com/Labin97/philo/assets/109407187/018c050e-b9fa-42ec-8b89-1b5de73692b9)
 
 
+```
+void	philo_eats(t_philo *philo, t_arg *arg)
+{
+	pthread_mutex_lock(&(arg->forks[philo->left]));
+	action_print(arg, philo->id, "has taken a fork", 0);
+	pthread_mutex_lock(&(arg->forks[philo->right]));
+	action_print(arg, philo->id, "has taken a fork", 0);
+	pthread_mutex_lock(&(arg->moniter));
+	action_print(arg, philo->id, "is eating", 0);
+	philo->last_eat_time = timestamp();
+	(philo->eat_count)++;
+	pthread_mutex_unlock(&(arg->moniter));
+	smart_sleep(arg->time_to_eat, arg);
+	pthread_mutex_unlock(&(arg->forks[philo->left]));
+	pthread_mutex_unlock(&(arg->forks[philo->right]));
+}
+```
 
+pthread_mutex_lock() 을 활용하여 쓰레드의 동시 접근을 막는다.
+
+
+monitering 함수를 이용해서 전체적은 eat_count를 확인하고 조건 충족시 중지시킨다.
